@@ -192,7 +192,7 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="py-24 sm:py-32 px-6 md:px-12 bg-white flex flex-col items-center justify-center"
+      className="pt-24 sm:pt-32 pb-40 sm:pb-48 px-6 md:px-12 bg-white flex flex-col items-center justify-center"
     >
       <div className="max-w-7xl mx-auto w-full">
         {/* Section Header */}
@@ -335,13 +335,6 @@ export default function Projects() {
                         <span className="text-[10px] font-mono text-zinc-400 ml-2 truncate min-w-0">
                           {project.liveUrl}
                         </span>
-                      </div>
-                      <div className="flex gap-1.5 flex-wrap shrink-0">
-                        {project.tags.slice(0, 3).map((tag) => (
-                          <span key={tag} className="bg-zinc-100 text-zinc-500 text-[9px] font-mono font-medium px-2 py-0.5 rounded-full border border-zinc-200">
-                            {tag}
-                          </span>
-                        ))}
                       </div>
                     </div>
 

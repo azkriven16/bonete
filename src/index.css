@@ -128,4 +128,7 @@ section {
 .marquee-reverse {
   animation-direction: reverse;
 }
+.marquee-paused .marquee-inner {
+  animation-play-state: paused;
+}
 

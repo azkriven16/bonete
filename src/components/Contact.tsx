@@ -75,7 +75,7 @@ export default function Contact({ onSuccessNotification }: ContactProps) {
   return (
     <section
       id="contact"
-      className="py-24 sm:py-32 px-6 md:px-12 bg-white flex flex-col items-center justify-center relative overflow-hidden"
+      className="pt-24 sm:pt-32 pb-40 sm:pb-48 px-6 md:px-12 bg-white flex flex-col items-center justify-center relative overflow-hidden"
     >
       {/* Subtle bottom mesh pattern */}
       <div className="absolute bottom-0 right-0 w-125 h-125 bg-zinc-50 rounded-full blur-[120px] opacity-60 -z-10 pointer-events-none" />
@@ -159,7 +159,7 @@ export default function Contact({ onSuccessNotification }: ContactProps) {
             </div>
             <div className="bg-zinc-50/60 p-8 sm:p-10 rounded-3xl border border-zinc-200 shadow-sm relative h-full">
                 <form onSubmit={handleFormSubmit} className="flex flex-col gap-7 text-left">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-6">
                     {/* Input Name */}
                     <div className="flex flex-col gap-2">
                       <label htmlFor="name" className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider">

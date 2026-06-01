@@ -90,7 +90,7 @@ export default function Hero({
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col justify-between pt-10 md:pt-32 pb-16 px-6 md:px-12 bg-radial from-zinc-50 via-zinc-100 to-white overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-between pt-10 md:pt-32 pb-32 px-6 md:px-12 bg-radial from-zinc-50 via-zinc-100 to-white overflow-hidden"
     >
       <div
         className="absolute inset-0  pointer-events-none"

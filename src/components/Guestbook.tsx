@@ -116,7 +116,7 @@ const MarqueeCard = ({ entry }: MarqueeCardProps) => {
     .toUpperCase();
 
   return (
-    <div className="p-4 rounded-xl mx-2 sm:mx-2.5 bg-white border border-zinc-200 shadow-sm hover:shadow-md transition-all duration-200 w-52 sm:w-64 md:w-72 shrink-0 text-left overflow-hidden">
+    <div className="p-4 rounded-xl mx-2 sm:mx-2.5 bg-white border border-zinc-200 shadow-sm hover:shadow-md transition-all duration-200 w-72 sm:w-80 md:w-88 shrink-0 text-left overflow-hidden">
       <div className="flex gap-2.5">
         <div className="size-10 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-700 font-bold text-xs flex items-center justify-center shrink-0">
           {initials}
@@ -239,57 +239,66 @@ export default function Guestbook() {
   return (
     <section
       id="guestbook"
-      className="py-24 sm:py-32 px-6 md:px-12 bg-white flex flex-col items-center justify-center relative"
+      className="bg-zinc-100 flex flex-col relative overflow-hidden"
     >
       <div className="absolute top-1/2 left-0 w-72 h-72 bg-zinc-50 rounded-full filter blur-3xl opacity-60 pointer-events-none -translate-x-1/2 -z-10" />
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-zinc-50 rounded-full filter blur-3xl opacity-50 pointer-events-none translate-x-1/3 translate-y-1/3 -z-10" />
 
-      <div className="max-w-7xl mx-auto w-full">
-        {/* Section Header */}
-        <div
-          id="guestbook-heading"
-          className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-20 border-b border-zinc-150 pb-8"
-        >
-          <div className="flex flex-col text-left">
-            <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest leading-none mb-3">
-              04 // PUBLIC RECORD
-            </span>
-            <h2 className="text-3xl md:text-5xl font-sans font-bold text-zinc-950 tracking-tight">
-              Developer Guestbook
-            </h2>
-            <svg viewBox="0 0 120 6" xmlns="http://www.w3.org/2000/svg" className="mt-2 w-32 h-1.5 text-zinc-300" preserveAspectRatio="none" fill="none" aria-hidden="true">
-              <path d="M0 3 Q7.5 0 15 3 Q22.5 6 30 3 Q37.5 0 45 3 Q52.5 6 60 3 Q67.5 0 75 3 Q82.5 6 90 3 Q97.5 0 105 3 Q112.5 6 120 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-          </div>
-          <button
-            onClick={() => setIsDialogOpen(true)}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-zinc-950 text-white text-xs font-semibold hover:opacity-90 active:scale-[0.98] transition-all cursor-pointer shrink-0"
+      {/* Padded header — mirrors the footer's px-6 md:px-12 wrapper */}
+      <div className="pt-24 sm:pt-32 pb-32 px-6 md:px-12 w-full">
+        <div className="max-w-7xl mx-auto w-full">
+          <div
+            id="guestbook-heading"
+            className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 border-b border-zinc-150 pb-8"
           >
-            <PenTool className="w-3.5 h-3.5" />
-            Sign the Guestbook
-          </button>
+            <div className="flex flex-col text-left">
+              <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest leading-none mb-3">
+                04 // PUBLIC RECORD
+              </span>
+              <h2 className="text-3xl md:text-5xl font-sans font-bold text-zinc-950 tracking-tight">
+                Developer Guestbook
+              </h2>
+              <svg viewBox="0 0 120 6" xmlns="http://www.w3.org/2000/svg" className="mt-2 w-32 h-1.5 text-zinc-300" preserveAspectRatio="none" fill="none" aria-hidden="true">
+                <path d="M0 3 Q7.5 0 15 3 Q22.5 6 30 3 Q37.5 0 45 3 Q52.5 6 60 3 Q67.5 0 75 3 Q82.5 6 90 3 Q97.5 0 105 3 Q112.5 6 120 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+            </div>
+            <button
+              onClick={() => setIsDialogOpen(true)}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-zinc-950 text-white text-xs font-semibold hover:opacity-90 active:scale-[0.98] transition-all cursor-pointer shrink-0"
+            >
+              <PenTool className="w-3.5 h-3.5" />
+              Sign the Guestbook
+            </button>
+          </div>
         </div>
+      </div>
 
-        {/* Two-row auto-scrolling marquee */}
-        <div className="flex flex-col gap-0 overflow-hidden select-none -mx-6 md:-mx-12">
-          <div className="relative overflow-hidden">
-            <div className="absolute left-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-r from-white to-transparent" />
-            <div className="marquee-inner flex transform-gpu min-w-[200%] py-3">
-              {[...entries, ...entries].map((entry, i) => (
-                <MarqueeCard key={`r1-${i}`} entry={entry} />
-              ))}
-            </div>
-            <div className="absolute right-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-l from-white to-transparent" />
+      {/* Full-bleed marquee — same pattern as Footer's crowd canvas */}
+      {/* Sits as a direct sibling to the padded header, not inside it */}
+      <div
+        className="flex flex-col gap-0 w-full overflow-hidden select-none pb-8"
+        onMouseEnter={(e) => e.currentTarget.classList.add("marquee-paused")}
+        onMouseLeave={(e) => e.currentTarget.classList.remove("marquee-paused")}
+        onTouchStart={(e) => e.currentTarget.classList.add("marquee-paused")}
+        onTouchEnd={(e) => e.currentTarget.classList.remove("marquee-paused")}
+      >
+        <div className="relative overflow-hidden">
+          <div className="absolute left-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-r from-zinc-100 to-transparent" />
+          <div className="marquee-inner flex transform-gpu min-w-[200%] py-3">
+            {[...entries, ...entries, ...entries, ...entries].map((entry, i) => (
+              <MarqueeCard key={`r1-${i}`} entry={entry} />
+            ))}
           </div>
-          <div className="relative overflow-hidden">
-            <div className="absolute left-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-r from-white to-transparent" />
-            <div className="marquee-inner marquee-reverse flex transform-gpu min-w-[200%] py-3">
-              {[...entries, ...entries].map((entry, i) => (
-                <MarqueeCard key={`r2-${i}`} entry={entry} />
-              ))}
-            </div>
-            <div className="absolute right-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-l from-white to-transparent" />
+          <div className="absolute right-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-l from-zinc-100 to-transparent" />
+        </div>
+        <div className="hidden sm:block relative overflow-hidden">
+          <div className="absolute left-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-r from-zinc-100 to-transparent" />
+          <div className="marquee-inner marquee-reverse flex transform-gpu min-w-[200%] py-3">
+            {[...entries, ...entries, ...entries, ...entries].map((entry, i) => (
+              <MarqueeCard key={`r2-${i}`} entry={entry} />
+            ))}
           </div>
+          <div className="absolute right-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-l from-zinc-100 to-transparent" />
         </div>
       </div>
 
@@ -371,32 +380,34 @@ export default function Guestbook() {
                     )}
                   </AnimatePresence>
 
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
-                      <User className="w-3.5 h-3.5" /> Full Name / Alias <span className="text-rose-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Amanda Cole"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      disabled={isSubmitting}
-                      className="w-full bg-white border border-zinc-200 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 transition-all"
-                    />
-                  </div>
+                  <div className="flex gap-3">
+                    <div className="flex flex-col gap-1.5 flex-1 min-w-0">
+                      <label className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <User className="w-3.5 h-3.5" /> Name <span className="text-rose-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Amanda Cole"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        disabled={isSubmitting}
+                        className="w-full bg-white border border-zinc-200 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 transition-all"
+                      />
+                    </div>
 
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
-                      <Briefcase className="w-3.5 h-3.5" /> Role / Company
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Lead Designer at Linear (optional)"
-                      value={role}
-                      onChange={(e) => setRole(e.target.value)}
-                      disabled={isSubmitting}
-                      className="w-full bg-white border border-zinc-200 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 transition-all"
-                    />
+                    <div className="flex flex-col gap-1.5 flex-1 min-w-0">
+                      <label className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <Briefcase className="w-3.5 h-3.5" /> Role
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Designer at Linear"
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                        disabled={isSubmitting}
+                        className="w-full bg-white border border-zinc-200 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 transition-all"
+                      />
+                    </div>
                   </div>
 
                   <div className="flex flex-col gap-1.5">

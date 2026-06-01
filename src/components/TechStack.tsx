@@ -45,7 +45,7 @@ export default function TechStack() {
   return (
     <section
       id="stack"
-      className="py-24 sm:py-32 px-6 md:px-12 bg-zinc-100 flex flex-col items-center justify-center relative overflow-hidden"
+      className="pt-24 sm:pt-32 pb-40 sm:pb-48 px-6 md:px-12 bg-zinc-100 flex flex-col items-center justify-center relative overflow-hidden"
     >
       {/* Decorative clean radial mesh */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-zinc-100 rounded-full blur-[160px] opacity-40 -z-10 pointer-events-none" />

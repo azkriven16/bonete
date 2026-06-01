@@ -14,7 +14,13 @@ import PortfolioChat from "./components/PortfolioChat";
 import ZigzagScrollProgress from "./components/ZigzagScrollProgress";
 import { ArrowUp } from "lucide-react";
 
-const SECTION_IDS = ["hero", "projects", "stack", "contact", "guestbook"] as const;
+const SECTION_IDS = [
+  "hero",
+  "projects",
+  "stack",
+  "contact",
+  "guestbook",
+] as const;
 
 export default function App() {
   const [activeSection, setActiveSection] = useState("hero");
@@ -93,28 +99,31 @@ export default function App() {
           onNavigateToContact={() => handleNavigate("contact")}
         />
         {/* zinc radial → white */}
-        <SectionDivider variant="zigzag" fill="var(--color-white)" />
+        <SectionDivider variant="scallops" fill="var(--color-white)" />
 
         {/* Centerpiece Section 2: Projects (Mockups & Simulators) */}
         <Projects />
-        {/* white → white (subtle rhythm break) */}
-        <SectionDivider variant="zigzag" fill="var(--color-white)" />
+        {/* white → zinc-100 */}
+        <SectionDivider variant="scallops" fill="var(--color-zinc-100)" />
 
         {/* Showcase Section 2: Tech Stack */}
         <TechStack />
-        {/* zinc-100 → white */}
-        <SectionDivider variant="bigwave" fill="var(--color-white)" />
+        {/* white → white */}
+        <SectionDivider variant="scallops" fill="var(--color-white)" />
 
         {/* Immersive Section 6: Contact Forms & Local Times */}
         <Contact
           onSuccessNotification={(msg) => triggerToast(msg, "success")}
         />
 
+        {/* white → zinc-100 */}
+        <SectionDivider variant="scallops" fill="var(--color-zinc-100)" />
+
         {/* Public Record Section 7: Guestbook Registry */}
         <Guestbook />
       </main>
 
-      {/* white → zinc-50 */}
+      {/* zinc-100 → zinc-50 */}
       <SectionDivider variant="scallops" fill="var(--color-zinc-50)" />
 
       {/* Premium Minimal Footer */}
