@@ -61,9 +61,10 @@ function getFontProperties(p: FontPairing) {
 }
 
 function getPaddingPixels(d: DensityMode): string {
-  if (d === "compact") return "2.5rem";
-  if (d === "editorial") return "11rem";
-  return "6.5rem";
+  // Fluid: scales from mobile min → desktop max between 375px–1024px
+  if (d === "compact") return "clamp(2rem, calc(2rem + 0.5rem * ((100vw - 375px) / 649px)), 2.5rem)";
+  if (d === "editorial") return "clamp(5rem, calc(5rem + 6rem * ((100vw - 375px) / 649px)), 11rem)";
+  return "clamp(3rem, calc(3rem + 3.5rem * ((100vw - 375px) / 649px)), 6.5rem)";
 }
 
 export default function ThemeCustomizer() {

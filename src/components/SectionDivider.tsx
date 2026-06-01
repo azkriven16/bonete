@@ -38,12 +38,13 @@ function getPath(variant: Variant, h: number, mobile = false): string {
         `L1440,${h} L0,${h} Z`
       );
     case 'scallops': {
-      const count = mobile ? 5 : 12;
+      const count = mobile ? 8 : 12;
       const step = 1440 / count;
+      const cpY = mobile ? -h : 6;
       let d = `M0,${h}`;
       for (let i = 0; i < count; i++) {
         const x = i * step;
-        d += ` Q${x + step / 2},6 ${x + step},${h}`;
+        d += ` Q${x + step / 2},${cpY} ${x + step},${h}`;
       }
       return d + ' Z';
     }

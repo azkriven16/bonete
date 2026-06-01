@@ -56,7 +56,7 @@
   --font-display-custom: "Space Grotesk", sans-serif;
 
   /* Global spacing setting default */
-  --spacing-section-py: var(--spacing-section-py-custom, 11rem);
+  --spacing-section-py: var(--spacing-section-py-custom, 1rem);
 }
 
 .dark {
@@ -98,6 +98,14 @@ body {
 
 h1, h2, h3, .font-display {
   font-family: var(--font-display);
+}
+
+@media (min-width: 640px) {
+  :root { --spacing-section-py: var(--spacing-section-py-custom, 5rem); }
+}
+
+@media (min-width: 1024px) {
+  :root { --spacing-section-py: var(--spacing-section-py-custom, 11rem); }
 }
 
 /* Custom layout density spacer classes that apply globally */

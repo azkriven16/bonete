@@ -81,9 +81,9 @@ export default function TechStack() {
               className="w-full h-full"
             >
               <TiltCard className="h-full">
-                <div className="bg-white border border-zinc-200 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:border-zinc-300 transition-colors group duration-300 h-full">
+                <div className="bg-white border border-zinc-200 p-5 sm:p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:border-zinc-300 transition-colors group duration-300 h-full">
                   {/* Category branding and details */}
-                  <div className="flex flex-col text-left gap-2 mb-8">
+                  <div className="flex flex-col text-left gap-2 mb-5 sm:mb-8">
                     <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider font-bold">
                       CAT-0{catIndex + 1} // OVERVIEW
                     </span>
@@ -96,16 +96,16 @@ export default function TechStack() {
                   </div>
 
                   {/* Stack items bento list */}
-                  <div className="flex flex-col gap-3.5">
+                  <div className="flex flex-col gap-2 sm:gap-3.5">
                     {category.items.map((tech) => {
                       const IconComponent = iconMap[tech.iconName] || HelpCircle;
                       return (
                         <div
                           key={tech.name}
-                          className="flex items-center justify-between p-3.5 bg-zinc-50/70 border border-zinc-200/50 hover:bg-zinc-50 hover:border-zinc-300 rounded-2xl transition-all duration-200 group/item"
+                          className="flex items-center justify-between p-2.5 sm:p-3.5 bg-zinc-50/70 border border-zinc-200/50 hover:bg-zinc-50 hover:border-zinc-300 rounded-2xl transition-all duration-200 group/item"
                         >
-                          <div className="flex items-center gap-3.5">
-                            <div className="w-8 h-8 rounded-lg bg-white border border-zinc-150 flex items-center justify-center p-1.5 shadow-xs shrink-0 group-hover/item:scale-105 transition-transform duration-200">
+                          <div className="flex items-center gap-2.5 sm:gap-3.5">
+                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white border border-zinc-150 flex items-center justify-center p-1.5 shadow-xs shrink-0 group-hover/item:scale-105 transition-transform duration-200">
                               <IconComponent className="w-4 h-4 text-zinc-700" />
                             </div>
                             <span className="text-xs font-sans font-semibold text-zinc-850 group-hover/item:text-zinc-950 transition-colors">

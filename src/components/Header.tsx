@@ -52,7 +52,7 @@ export default function Header({ activeSection, onNavigate }: HeaderProps) {
       {/* Header Container */}
       <header
         id="app-header"
-        className={`fixed top-0 left-0 w-full z-40 transition-all duration-500 px-6 lg:px-12 py-5 ${
+        className={`fixed top-0 left-0 w-full z-40 transition-all duration-500 px-4 lg:px-12 py-3 lg:py-5 ${
           scrolled ? 'backdrop-blur-none bg-transparent' : 'bg-transparent'
         }`}
       >
@@ -61,16 +61,16 @@ export default function Header({ activeSection, onNavigate }: HeaderProps) {
           <button
             id="nav-logo"
             onClick={() => handleNavClick('hero')}
-            className="flex items-center gap-2.5 group cursor-pointer z-50 focus:outline-none backdrop-blur-xl bg-white/70 border border-zinc-200/60 shadow-xl shadow-zinc-100/40 dark:bg-zinc-150/90 dark:border-zinc-300/30 dark:shadow-black/20 rounded-full px-3 py-1.5 transition-all duration-300"
+            className="flex items-center gap-2 lg:gap-2.5 group cursor-pointer z-50 focus:outline-none backdrop-blur-xl bg-white/70 border border-zinc-200/60 shadow-xl shadow-zinc-100/40 dark:bg-zinc-150/90 dark:border-zinc-300/30 dark:shadow-black/20 rounded-full px-2 py-1 lg:px-3 lg:py-1.5 transition-all duration-300"
           >
-            <div className="w-10 h-10 rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-105 active:scale-95 shadow-md shadow-zinc-200">
+            <div className="w-7 h-7 lg:w-10 lg:h-10 rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-105 active:scale-95 shadow-md shadow-zinc-200">
               <img src="/images/icon.png" alt="Euger Bonete Jr logo" className="w-full h-full object-cover" />
             </div>
             <div className="flex flex-col text-left">
-              <span className="font-sans font-semibold text-sm tracking-tight text-zinc-950 transition-colors group-hover:text-zinc-700">
+              <span className="font-sans font-semibold text-xs lg:text-sm tracking-tight text-zinc-950 transition-colors group-hover:text-zinc-700">
                 Euger Bonete Jr
               </span>
-              <span className="text-[10px] font-mono text-zinc-400 tracking-wider uppercase leading-none">
+              <span className="hidden sm:block text-[10px] font-mono text-zinc-400 tracking-wider uppercase leading-none">
                 Full-Stack Developer
               </span>
             </div>
@@ -144,7 +144,7 @@ export default function Header({ activeSection, onNavigate }: HeaderProps) {
           </div>
 
           {/* Mobile Search and Menu Controls */}
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className="flex items-center gap-2.5 lg:hidden">
             <button
               id="mobile-search-trigger"
               onClick={() => setIsCommandMenuOpen(true)}
