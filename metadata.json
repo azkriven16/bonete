@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Developer Portfolio",
+  "description": "A premium, cinematic product-driven developer portfolio inspired by Apple, Google, and Linear.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

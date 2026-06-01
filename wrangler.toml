@@ -1,0 +1,8 @@
+name = "bonete"
+main = "worker/index.ts"
+compatibility_date = "2025-05-31"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"

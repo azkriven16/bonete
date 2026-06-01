@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-sans-custom, "Inter", system-ui, sans-serif);
+  --font-display: var(--font-display-custom, "Plus Jakarta Sans", system-ui, sans-serif);
+  --font-mono: "JetBrains Mono", SFMono-Regular, Consolas, monospace;
+  --font-handwritten: "Caveat", cursive;
+
+  /* Map basic White & Zinc colors to custom CSS variables for dark mode */
+  --color-white: var(--color-white-custom, #ffffff);
+  --color-zinc-50: var(--color-zinc-50-custom, #fafafa);
+  --color-zinc-100: var(--color-zinc-100-custom, #f4f4f5);
+  --color-zinc-150: var(--color-zinc-150-custom, #eef2f6);
+  --color-zinc-200: var(--color-zinc-200-custom, #e4e4e7);
+  --color-zinc-250: var(--color-zinc-250-custom, #dbdbe0);
+  --color-zinc-300: var(--color-zinc-300-custom, #d4d4d8);
+  --color-zinc-400: var(--color-zinc-400-custom, #a1a1aa);
+  --color-zinc-450: var(--color-zinc-450-custom, #81818a);
+  --color-zinc-500: var(--color-zinc-500-custom, #71717a);
+  --color-zinc-505: var(--color-zinc-505-custom, #61616a);
+  --color-zinc-550: var(--color-zinc-550-custom, #52525b);
+  --color-zinc-600: var(--color-zinc-600-custom, #4b5563);
+  --color-zinc-650: var(--color-zinc-650-custom, #374151);
+  --color-zinc-700: var(--color-zinc-700-custom, #27272a);
+  --color-zinc-805: var(--color-zinc-805-custom, #1f2937);
+  --color-zinc-850: var(--color-zinc-850-custom, #18181b);
+  --color-zinc-900: var(--color-zinc-900-custom, #111827);
+  --color-zinc-950: var(--color-zinc-950-custom, #09090b);
+}
+
+:root {
+  /* Default light palette definitions */
+  --color-white-custom: #ffffff;
+  --color-zinc-50-custom: #fafafa;
+  --color-zinc-100-custom: #f4f4f5;
+  --color-zinc-150-custom: #eef2f6;
+  --color-zinc-200-custom: #e4e4e7;
+  --color-zinc-250-custom: #dbdbe0;
+  --color-zinc-300-custom: #d4d4d8;
+  --color-zinc-400-custom: #a1a1aa;
+  --color-zinc-450-custom: #81818a;
+  --color-zinc-500-custom: #71717a;
+  --color-zinc-505-custom: #61616a;
+  --color-zinc-550-custom: #52525b;
+  --color-zinc-600-custom: #4b5563;
+  --color-zinc-650-custom: #374151;
+  --color-zinc-700-custom: #27272a;
+  --color-zinc-805-custom: #1f2937;
+  --color-zinc-850-custom: #18181b;
+  --color-zinc-900-custom: #111827;
+  --color-zinc-950-custom: #09090b;
+
+  --font-sans-custom: "Space Grotesk", sans-serif;
+  --font-display-custom: "Space Grotesk", sans-serif;
+
+  /* Global spacing setting default */
+  --spacing-section-py: var(--spacing-section-py-custom, 11rem);
+}
+
+.dark {
+  /* Dynamic invert of standard values for pristine dark mode */
+  --color-white-custom: #121214;       /* card standard */
+  --color-zinc-50-custom: #09090a;     /* body bg */
+  --color-zinc-100-custom: #19191c;
+  --color-zinc-150-custom: #1e1e22;
+  --color-zinc-200-custom: #27272c;    /* borders */
+  --color-zinc-250-custom: #34343a;
+  --color-zinc-300-custom: #4b4b54;
+  --color-zinc-400-custom: #71717c;
+  --color-zinc-450-custom: #81818a;
+  --color-zinc-500-custom: #a1a1aa;    /* captions & labels secondary */
+  --color-zinc-505-custom: #b5b5be;
+  --color-zinc-550-custom: #d4d4dc;
+  --color-zinc-600-custom: #e2e2ec;
+  --color-zinc-650-custom: #f4f4f8;    /* body text dark Mode */
+  --color-zinc-700-custom: #fbfbfc;
+  --color-zinc-805-custom: #fbfbfc;
+  --color-zinc-850-custom: #ffffff;
+  --color-zinc-900-custom: #ffffff;
+  --color-zinc-950-custom: #ffffff;    /* header emphasis dark Mode */
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  background-color: var(--color-zinc-50);
+  color: var(--color-zinc-850);
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+}
+
+/* Custom layout density spacer classes that apply globally */
+section {
+  padding-top: var(--spacing-section-py) !important;
+  padding-bottom: var(--spacing-section-py) !important;
+  transition: padding 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes vertical-marquee {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+.animate-vertical-marquee {
+  animation: vertical-marquee 30s linear infinite;
+}
+.animate-vertical-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-inner {
+  animation: marqueeScroll 25s linear infinite;
+}
+.marquee-reverse {
+  animation-direction: reverse;
+}
+
