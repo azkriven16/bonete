@@ -9,7 +9,6 @@ import Contact from "./components/Contact";
 import Guestbook from "./components/Guestbook";
 import Footer from "./components/Footer";
 import Notification from "./components/Notification";
-import ThemeCustomizer from "./components/ThemeCustomizer";
 import PortfolioChat from "./components/PortfolioChat";
 import ZigzagScrollProgress from "./components/ZigzagScrollProgress";
 import { ArrowUp } from "lucide-react";
@@ -140,9 +139,6 @@ export default function App() {
           <ArrowUp className="w-4 h-4" />
         </button>
       )}
-
-      {/* Dynamic Theme and Customization Workspace */}
-      <ThemeCustomizer />
 
       {/* Recruiter Portfolio Chat Agent */}
       <PortfolioChat />

@@ -6,6 +6,7 @@ import {
   Linkedin,
   Mail,
   CodeXml,
+  FileDown,
 } from "lucide-react";
 import { HERO_DATA } from "../data";
 import { SplitText, TiltCard } from "./ScrollAnimations";
@@ -185,13 +186,15 @@ export default function Hero({
             >
               Collaborate With Me
             </button>
-            <button
-              id="hero-cta-secondary"
-              onClick={onNavigateToAbout}
-              className="px-6 py-3 bg-white hover:bg-zinc-50 text-zinc-850 text-sm font-medium rounded-full border border-zinc-200 shadow-sm transition-all hover:scale-103 hover:border-zinc-300 active:scale-97 cursor-pointer"
+<a
+              id="hero-cta-resume"
+              href="/resume/euger_bonete_resume.pdf"
+              download
+              className="flex items-center gap-2 px-6 py-3 bg-white hover:bg-zinc-50 text-zinc-850 text-sm font-medium rounded-full border border-zinc-200 shadow-sm transition-all hover:scale-103 hover:border-zinc-300 active:scale-97"
             >
-              Read Design Philosophy
-            </button>
+              <FileDown className="w-4 h-4 text-zinc-400" />
+              Download CV
+            </a>
 
             {/* Hand-written annotation */}
             <div className="hidden md:flex items-center pointer-events-none select-none ml-1">

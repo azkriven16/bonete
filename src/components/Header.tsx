@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ArrowUpRight, Search, Sun, Moon } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Search, Sun, Moon, FileDown } from 'lucide-react';
 import CommandMenu from './CommandMenu';
 import { useDarkMode } from '../hooks/useDarkMode';
 
@@ -133,6 +133,16 @@ export default function Header({ activeSection, onNavigate }: HeaderProps) {
 
           {/* Contact / Action CTA Button */}
           <div className="hidden lg:flex items-center gap-3">
+            <a
+              id="header-resume"
+              href="/resume/euger_bonete_resume.pdf"
+              download
+              className="flex items-center gap-1.5 text-zinc-500 hover:text-zinc-950 text-xs font-medium px-3 py-2 rounded-full border border-zinc-200 hover:border-zinc-300 bg-white hover:bg-zinc-50 transition-all duration-200 shadow-sm"
+              title="Download Resume"
+            >
+              <FileDown className="w-3.5 h-3.5" />
+              Resume
+            </a>
             <button
               id="header-cta"
               onClick={() => handleNavClick('contact')}
@@ -210,7 +220,7 @@ export default function Header({ activeSection, onNavigate }: HeaderProps) {
                       onClick={() => handleNavClick(item.id)}
                       className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-colors flex items-center justify-between ${
                         isActive
-                          ? 'bg-zinc-50 text-zinc-950 border-l-2 border-zinc-950 font-semibold'
+                          ? 'bg-zinc-200 text-zinc-950 font-semibold'
                           : 'text-zinc-500 hover:text-zinc-850 hover:bg-zinc-50/50'
                       }`}
                     >
@@ -222,6 +232,19 @@ export default function Header({ activeSection, onNavigate }: HeaderProps) {
               </div>
 
               <div className="h-[1px] bg-zinc-250 my-2" />
+
+              <motion.a
+                id="mobile-menu-resume"
+                href="/resume/euger_bonete_resume.pdf"
+                download
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="w-full flex items-center justify-center gap-2 bg-white border border-zinc-200 text-zinc-700 font-medium py-3 rounded-xl text-sm"
+              >
+                <FileDown className="w-4 h-4 text-zinc-400" />
+                Download Resume
+              </motion.a>
 
               <motion.button
                 id="mobile-menu-cta"

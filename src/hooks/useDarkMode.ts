@@ -1,14 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 
-const EVENT = 'portfolio-theme-change';
-
-function readDarkFromStorage(): boolean {
+function readDark(): boolean {
   try {
-    const saved = localStorage.getItem('workspace-section-configs');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      return parsed?.global?.themeMode === 'dark';
-    }
+    return localStorage.getItem('theme') !== 'light';
   } catch {}
   return true; // default: dark
 }
@@ -19,21 +13,11 @@ function applyDark(dark: boolean) {
 }
 
 export function useDarkMode() {
-  const [isDark, setIsDark] = useState<boolean>(() => readDarkFromStorage());
+  const [isDark, setIsDark] = useState<boolean>(() => readDark());
 
   useEffect(() => {
     applyDark(isDark);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    const handler = () => {
-      const next = readDarkFromStorage();
-      setIsDark(next);
-      applyDark(next);
-    };
-    window.addEventListener(EVENT, handler);
-    return () => window.removeEventListener(EVENT, handler);
   }, []);
 
   const toggle = useCallback(() => {
@@ -41,13 +25,8 @@ export function useDarkMode() {
     applyDark(next);
     setIsDark(next);
     try {
-      const saved = localStorage.getItem('workspace-section-configs');
-      const parsed = saved ? JSON.parse(saved) : {};
-      if (!parsed.global) parsed.global = {};
-      parsed.global.themeMode = next ? 'dark' : 'light';
-      localStorage.setItem('workspace-section-configs', JSON.stringify(parsed));
+      localStorage.setItem('theme', next ? 'dark' : 'light');
     } catch {}
-    window.dispatchEvent(new Event(EVENT));
   }, [isDark]);
 
   return { isDark, toggle };

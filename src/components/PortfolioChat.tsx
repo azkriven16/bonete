@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, ReactNode } from "react";
+import { useState, useEffect, useRef, ReactNode } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { MessageSquare, Sparkles, Send, X, Bot, User, Trash2, ArrowUpRight, HelpCircle, Loader2 } from "lucide-react";
+import { MessageSquare, Send, X, Bot, User, Trash2, ArrowUpRight, HelpCircle, Loader2 } from "lucide-react";
 
 interface Message {
   id: string;
@@ -43,7 +43,6 @@ function MarkdownRenderer({ content, isUser }: MarkdownRendererProps) {
 
   const lines = content.split("\n");
   const elements: ReactNode[] = [];
-  let inList = false;
   let listItems: ReactNode[] = [];
 
   const flushList = (keyPrefix: string | number) => {
@@ -54,7 +53,6 @@ function MarkdownRenderer({ content, isUser }: MarkdownRendererProps) {
         </ul>
       );
       listItems = [];
-      inList = false;
     }
   };
 
@@ -85,7 +83,6 @@ function MarkdownRenderer({ content, isUser }: MarkdownRendererProps) {
     // List bullets
     const isBulletMatch = trimmed.startsWith("* ") || trimmed.startsWith("- ") || trimmed.startsWith("• ");
     if (isBulletMatch) {
-      inList = true;
       const cleanText = trimmed.startsWith("* ") || trimmed.startsWith("- ") ? trimmed.slice(2) : trimmed.slice(1);
       listItems.push(
         <li key={`li-${index}`} className="leading-relaxed">
@@ -130,17 +127,20 @@ export default function PortfolioChat() {
   const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [errorStatus, setErrorStatus] = useState<string | null>(null);
-  
+  const [quotaCount, setQuotaCount] = useState(0);
+  const [quotaWindowStart, setQuotaWindowStart] = useState<number>(Date.now());
+  const [rateLimitCountdown, setRateLimitCountdown] = useState<number | null>(null);
+
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const streamingIntervalRef = useRef<any>(null);
+  const countdownRef = useRef<any>(null);
 
-  // Clean up typing stream on unmount
+  // Clean up typing stream and countdown on unmount
   useEffect(() => {
     return () => {
-      if (streamingIntervalRef.current) {
-        clearInterval(streamingIntervalRef.current);
-      }
+      if (streamingIntervalRef.current) clearInterval(streamingIntervalRef.current);
+      if (countdownRef.current) clearInterval(countdownRef.current);
     };
   }, []);
 
@@ -199,7 +199,7 @@ export default function PortfolioChat() {
     const initialGreeting: Message = {
       id: "system-greeting-0",
       role: "assistant",
-      content: "Hello! I am Euger's official Personal AI Assistant. ☕\n\nI can answer questions about his software engineering background, full-stack tech stack (React, Node, Rust, etc.), freelance works like **Viafide** & **Global Talent Portal**, and overall design philosophy. What would you like to explore today?",
+      content: "Hello! I am Euger's official Personal AI Assistant. ☕\n\nI can answer questions about his software engineering background and full-stack tech stack. What would you like to explore today?",
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     };
     setMessages([initialGreeting]);
@@ -215,6 +215,16 @@ export default function PortfolioChat() {
     }
 
     setErrorStatus(null);
+
+    // Track local quota window (mirrors the server's 10 req/min limit)
+    const now = Date.now();
+    if (now - quotaWindowStart > 60000) {
+      setQuotaCount(1);
+      setQuotaWindowStart(now);
+    } else {
+      setQuotaCount((prev) => prev + 1);
+    }
+
     const userMessage: Message = {
       id: `m-${Date.now()}-user`,
       role: "user",
@@ -240,6 +250,20 @@ export default function PortfolioChat() {
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
+        if (res.status === 429) {
+          const secondsLeft = Math.max(5, Math.ceil((60000 - (Date.now() - quotaWindowStart)) / 1000));
+          setRateLimitCountdown(secondsLeft);
+          if (countdownRef.current) clearInterval(countdownRef.current);
+          countdownRef.current = setInterval(() => {
+            setRateLimitCountdown((prev) => {
+              if (prev === null || prev <= 1) {
+                clearInterval(countdownRef.current);
+                return null;
+              }
+              return prev - 1;
+            });
+          }, 1000);
+        }
         throw new Error(errData.error || "Server response failed.");
       }
 
@@ -337,16 +361,10 @@ export default function PortfolioChat() {
               <button
                 id="contact-ai-dock-btn"
                 onClick={() => setIsOpen(true)}
-                className="group flex items-center gap-3 p-3 px-4 rounded-full bg-zinc-950 dark:bg-[#1c1c1f] text-zinc-50 dark:text-[#fafafa] shadow-xl hover:bg-zinc-800 dark:hover:bg-[#27272a] hover:scale-105 active:scale-95 transition-all cursor-pointer select-none"
+                className="group relative w-14 h-14 rounded-full bg-zinc-950 text-zinc-50 shadow-2xl hover:bg-zinc-800 dark:hover:bg-zinc-700 hover:scale-105 active:scale-95 transition-all cursor-pointer select-none flex items-center justify-center"
               >
-                <div className="relative">
-                  <Sparkles className="w-4 h-4 text-amber-400 fill-amber-400 group-hover:rotate-12 transition-transform" />
-                  <span className="absolute -top-1.5 -right-1.5 w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                </div>
-                <div className="flex flex-col text-left leading-none pr-1">
-                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest leading-none font-bold mb-0.5">ASK RECRUITER AI</span>
-                  <span className="text-xs font-sans font-extrabold leading-none tracking-tight">Chat with Euger&apos;s Assistant</span>
-                </div>
+                <MessageSquare className="w-6 h-6 text-zinc-50 group-hover:scale-110 transition-transform" />
+                <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-zinc-950 animate-pulse" />
               </button>
             </motion.div>
           )}
@@ -484,6 +502,25 @@ export default function PortfolioChat() {
                 </div>
               </div>
 
+              {/* Quota / Rate-limit status bar */}
+              {rateLimitCountdown !== null ? (
+                <div className="px-4 py-2 bg-amber-50 border-t border-amber-100 flex items-center justify-between">
+                  <span className="text-[9px] font-mono uppercase tracking-widest text-amber-700 font-semibold">
+                    Rate limit reached — try again in {rateLimitCountdown}s
+                  </span>
+                  <span className="text-[9px] font-mono text-amber-500">10/10 used</span>
+                </div>
+              ) : quotaCount >= 7 ? (
+                <div className="px-4 py-1.5 border-t border-zinc-100 flex items-center justify-between">
+                  <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-widest">
+                    API quota
+                  </span>
+                  <span className={`text-[9px] font-mono font-semibold ${quotaCount >= 9 ? "text-red-500" : "text-amber-500"}`}>
+                    {quotaCount}/10 messages this minute
+                  </span>
+                </div>
+              ) : null}
+
               {/* Bottom Interactive Message Bar */}
               <form
                 onSubmit={(e) => {
@@ -499,8 +536,8 @@ export default function PortfolioChat() {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     maxLength={500}
-                    placeholder={isStreaming ? "Wait for AI response to finish..." : "Ask about Euger's credentials, stack, projects..."}
-                    disabled={isLoading || isStreaming}
+                    placeholder={rateLimitCountdown !== null ? `Rate limited — retry in ${rateLimitCountdown}s` : isStreaming ? "Wait for AI response to finish..." : "Ask about Euger's credentials, stack, projects..."}
+                    disabled={isLoading || isStreaming || rateLimitCountdown !== null}
                     className="w-full bg-zinc-50 border border-zinc-250 py-2.5 pl-4 pr-12 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950 transition-all font-sans text-zinc-850 placeholder-zinc-400 disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                   {inputValue.length > 0 && (

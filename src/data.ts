@@ -8,9 +8,9 @@ export const HERO_DATA = {
     "Full-stack developer specializing in turning Figma into production — type-safe interfaces built with React, TypeScript, and Next.js. Three years shipping for real clients across hiring, fintech, and SaaS.",
   availability: "Available for new inquiries",
   socials: {
-    github: "https://github.com",
-    linkedin: "https://linkedin.com",
-    email: "eugerbone@email.com",
+    github: "https://github.com/azkriven16/",
+    linkedin: "https://www.linkedin.com/in/euger-bonete/",
+    email: "eugerbone@gmail.com",
   },
 };
 

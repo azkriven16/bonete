@@ -1,26 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Search, 
-  Command, 
-  ArrowUp, 
-  ArrowDown, 
-  X, 
-  Layout, 
-  Compass, 
-  Cpu, 
-  Milestone, 
-  Sparkles, 
-  Mail, 
-  Github, 
-  Linkedin, 
-  Copy, 
-  Check, 
+  Search,
+  Command,
+  ArrowUp,
+  ArrowDown,
+  X,
+  Layout,
+  Compass,
+  Cpu,
+  Milestone,
+  Sparkles,
+  Mail,
+  Github,
+  Linkedin,
+  Copy,
+  Check,
   ArrowRight,
   ShieldCheck,
   Users,
   Calculator,
-  BookOpen
+  BookOpen,
+  FileDown
 } from 'lucide-react';
 
 interface CommandItem {
@@ -190,6 +191,19 @@ export default function CommandMenu({ isOpen, onClose, onNavigate }: CommandMenu
         }, 850);
       },
       shortcut: 'R C'
+    },
+
+    {
+      id: 'act-resume',
+      title: 'Download Resume / CV',
+      subtitle: 'Get the latest PDF version of my resume',
+      category: 'Actions & Projects',
+      icon: FileDown,
+      handler: () => {
+        window.open('/resume/euger_bonete_resume.pdf', '_blank');
+        onClose();
+      },
+      shortcut: 'D R'
     },
 
     // Connect Section
