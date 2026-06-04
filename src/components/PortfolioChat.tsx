@@ -249,7 +249,9 @@ export default function PortfolioChat() {
       });
 
       if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
+        const rawBody = await res.text().catch(() => "");
+        let errData: { error?: string } = {};
+        try { errData = JSON.parse(rawBody); } catch { /* non-JSON body */ }
         if (res.status === 429) {
           const secondsLeft = Math.max(5, Math.ceil((60000 - (Date.now() - quotaWindowStart)) / 1000));
           setRateLimitCountdown(secondsLeft);
@@ -264,7 +266,7 @@ export default function PortfolioChat() {
             });
           }, 1000);
         }
-        throw new Error(errData.error || "Server response failed.");
+        throw new Error(errData.error || `[${res.status}] ${rawBody.slice(0, 200) || "Server response failed."}`);
       }
 
       const data = await res.json();
@@ -374,7 +376,7 @@ export default function PortfolioChat() {
       {/* Slide-out Interactive Dialog Panel */}
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed inset-0 z-50 flex items-stretch md:items-end justify-stretch md:justify-end p-0 md:p-6 pointer-events-none bg-black/35 md:bg-black/5 backdrop-blur-[2px] md:backdrop-blur-[1px]">
+          <div className="fixed inset-0 z-50 flex items-stretch md:items-end justify-stretch md:justify-end p-0 md:p-6 pointer-events-none">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 40 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}

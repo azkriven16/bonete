@@ -1,5 +1,9 @@
 import { GoogleGenAI } from "@google/genai";
 
+interface Fetcher {
+  fetch(request: Request): Promise<Response>;
+}
+
 interface Env {
   GEMINI_API_KEY: string;
   ASSETS: Fetcher;
@@ -152,12 +156,19 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    const { pathname, method } = new URL(request.url);
+    try {
+      const { pathname } = new URL(request.url);
+      const { method } = request;
 
-    if (pathname === "/api/chat" && method === "POST") return handleChat(request, env);
-    if (pathname === "/api/health" && method === "GET")
-      return json({ status: "healthy", timestamp: new Date().toISOString() });
+      if (pathname === "/api/chat" && method === "POST") return handleChat(request, env);
+      if (pathname === "/api/health" && method === "GET")
+        return json({ status: "healthy", timestamp: new Date().toISOString() });
 
-    return env.ASSETS.fetch(request);
+      return env.ASSETS.fetch(request);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error("Unhandled worker error:", err);
+      return json({ error: `Worker error: ${message}` }, 500);
+    }
   },
 };
