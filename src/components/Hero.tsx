@@ -109,7 +109,7 @@ export default function Hero({
       </div>
 
       {/* Hero Content Grid */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <div className="pt-20 md:pt-0 relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
         {/* Main Copy */}
         <motion.div
           id="hero-content"

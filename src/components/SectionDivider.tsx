@@ -83,6 +83,7 @@ export default function SectionDivider({
 
   return (
     <div
+     className="block md:block"
       style={{
         marginTop: `calc(-${((h / 1440) * 100).toFixed(4)}vw + 1px)`,
         lineHeight: 0,
@@ -91,12 +92,7 @@ export default function SectionDivider({
         pointerEvents: 'none',
       }}
     >
-      <div className="block md:hidden">
-        <svg viewBox={`0 0 1440 ${h}`} width="100%" height="auto" style={svgStyle}>
-          <path d={getPath(variant, h, true)} style={{ fill }} />
-        </svg>
-      </div>
-      <div className="hidden md:block">
+      <div>
         <svg viewBox={`0 0 1440 ${h}`} width="100%" height="auto" style={svgStyle}>
           <path d={getPath(variant, h, false)} style={{ fill }} />
         </svg>
