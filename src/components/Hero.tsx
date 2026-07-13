@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, Variant, Variants } from "motion/react";
+import { motion, Variants  } from "motion/react";
 import {
   ArrowDown,
   Github,
