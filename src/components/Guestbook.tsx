@@ -8,8 +8,10 @@ import {
   Send,
   Briefcase,
   CheckCircle,
+  BadgeCheck,
   X,
 } from "lucide-react";
+import { supabase } from "../utils/supabase";
 
 interface GuestbookEntry {
   id: string;
@@ -62,40 +64,40 @@ const BADGES = [
 const PRESEEDED_ENTRIES: GuestbookEntry[] = [
   {
     id: "p1",
-    name: "Guillermo Rauch",
-    role: "CEO, Vercel",
+    name: "Test User One",
+    role: "Sample Role",
     message:
-      "Love the extreme attention to details on the product design and responsive frameworks here. Excellent execution on the interactive project sandbox. Keep raising the bar, Euger!",
+      "This is placeholder guestbook content used to preview the layout before real visitors sign in. Replace or remove once live entries start coming in.",
     timestamp: "May 20, 2026",
     badge: "sparkle",
     isPreseeded: true,
   },
   {
     id: "p2",
-    name: "Lee Robinson",
-    role: "VP of Product, Vercel",
+    name: "Test User Two",
+    role: "Sample Role",
     message:
-      "This portfolio has amazing speed and layout flow. The Command Palette integration (Ctrl+K) is a delightful addition to developer portfolio UX. Very clean work.",
+      "Sample entry #2 — used to check how the marquee looks with multiple cards, varied message lengths, and different badge icons.",
     timestamp: "May 12, 2026",
     badge: "code",
     isPreseeded: true,
   },
   {
     id: "p3",
-    name: "Sarah Drasner",
-    role: "Eng Leader & Author",
+    name: "Test User Three",
+    role: "Sample Role",
     message:
-      "Beautiful Swiss minimalist style combined with immersive, interactive product trials. Seeing your real code architecture simulated is way better than reading static bullet points.",
+      "Placeholder text for layout testing. This entry exists only to fill space until real guestbook signatures start appearing.",
     timestamp: "April 28, 2026",
     badge: "bolt",
     isPreseeded: true,
   },
   {
     id: "p4",
-    name: "Tanner Linsley",
-    role: "Creator, TanStack",
+    name: "Test User Four",
+    role: "Sample Role",
     message:
-      "Type-safe structures and robust local state. The Ciptax Pro simulation and Viafide validator demonstrate exactly how modern engineers should present their works. Huge fan!",
+      "Dummy content for preview purposes. Swap this out for a real message or delete it entirely once the guestbook goes live.",
     timestamp: "April 15, 2026",
     badge: "coffee",
     isPreseeded: true,
@@ -111,6 +113,13 @@ const toHandle = (name: string) =>
     .split(" ")[0]
     .toLowerCase()
     .replace(/[^a-z0-9]/g, "");
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
 
 interface MarqueeCardProps {
   entry: GuestbookEntry;
@@ -135,23 +144,9 @@ const MarqueeCard = ({ entry }: MarqueeCardProps) => {
             <p className="text-sm font-semibold text-zinc-900 truncate">
               {entry.name}
             </p>
-            {entry.isPreseeded && (
-              <svg
-                className="mt-0.5 shrink-0"
-                width="12"
-                height="12"
-                viewBox="0 0 12 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M4.555.72a4 4 0 0 1-.297.24c-.179.12-.38.202-.59.244a4 4 0 0 1-.38.041c-.48.039-.721.058-.922.129a1.63 1.63 0 0 0-.992.992c-.071.2-.09.441-.129.922a4 4 0 0 1-.041.38 1.6 1.6 0 0 1-.245.59 3 3 0 0 1-.239.297c-.313.368-.47.551-.56.743-.213.444-.213.96 0 1.404.09.192.247.375.56.743.125.146.187.219.24.297.12.179.202.38.244.59.018.093.026.189.041.38.039.48.058.721.129.922.163.464.528.829.992.992.2.071.441.09.922.129.191.015.287.023.38.041.21.042.411.125.59.245.078.052.151.114.297.239.368.313.551.47.743.56.444.213.96.213 1.404 0 .192-.09.375-.247.743-.56.146-.125.219-.187.297-.24.179-.12.38-.202.59-.244a4 4 0 0 1 .38-.041c.48-.039.721-.058.922-.129.464-.163.829-.528.992-.992.071-.2.09-.441.129-.922a4 4 0 0 1 .041-.38c.042-.21.125-.411.245-.59.052-.078.114-.151.239-.297.313-.368.47-.551.56-.743.213-.444.213-.96 0-1.404-.09-.192-.247-.375-.56-.743a4 4 0 0 1-.24-.297 1.6 1.6 0 0 1-.244-.59 3 3 0 0 1-.041-.38c-.039-.48-.058-.721-.129-.922a1.63 1.63 0 0 0-.992-.992c-.2-.071-.441-.09-.922-.129a4 4 0 0 1-.38-.041 1.6 1.6 0 0 1-.59-.245A3 3 0 0 1 7.445.72C7.077.407 6.894.25 6.702.16a1.63 1.63 0 0 0-1.404 0c-.192.09-.375.247-.743.56m4.07 3.998a.488.488 0 0 0-.691-.69l-2.91 2.91-.958-.957a.488.488 0 0 0-.69.69l1.302 1.302c.19.191.5.191.69 0z"
-                  fill="#2196F3"
-                />
-              </svg>
-            )}
+           {entry.isPreseeded && (
+  <BadgeCheck className="w-3 h-3 shrink-0 text-blue-500 fill-blue-500/20" />
+)}
           </div>
           <span className="text-xs text-zinc-400">{toHandle(entry.name)}</span>
         </div>
@@ -175,6 +170,7 @@ const MarqueeCard = ({ entry }: MarqueeCardProps) => {
 export default function Guestbook() {
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Form State
   const [name, setName] = useState("");
@@ -194,25 +190,79 @@ export default function Guestbook() {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Loads entries from localStorage
+  // Loads entries from Supabase + subscribes to live inserts
   useEffect(() => {
-    const stored = localStorage.getItem("euger_guestbook_entries");
-    if (stored) {
-      try {
-        setEntries(JSON.parse(stored));
-      } catch (e) {
+    let isMounted = true;
+
+    const loadEntries = async () => {
+      const { data, error } = await supabase
+        .from("guestbook_entries")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(60);
+
+      if (!isMounted) return;
+
+      if (error) {
+        console.error("Failed to load guestbook entries:", error);
         setEntries(PRESEEDED_ENTRIES);
+        setIsLoading(false);
+        return;
       }
-    } else {
-      setEntries(PRESEEDED_ENTRIES);
-      localStorage.setItem(
-        "euger_guestbook_entries",
-        JSON.stringify(PRESEEDED_ENTRIES),
-      );
-    }
+
+      const live: GuestbookEntry[] = (data ?? []).map((row) => ({
+        id: row.id,
+        name: row.name,
+        role: row.role,
+        message: row.message,
+        badge: row.badge,
+        timestamp: formatDate(row.created_at),
+      }));
+
+      setEntries([...live, ...PRESEEDED_ENTRIES]);
+      setIsLoading(false);
+    };
+
+    loadEntries();
+
+    // Realtime: new entries appear live for everyone viewing the page
+    const channel = supabase
+      .channel("guestbook_entries_changes")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "guestbook_entries" },
+        (payload) => {
+          const row = payload.new as {
+            id: string;
+            name: string;
+            role: string;
+            message: string;
+            badge: string;
+            created_at: string;
+          };
+          const newEntry: GuestbookEntry = {
+            id: row.id,
+            name: row.name,
+            role: row.role,
+            message: row.message,
+            badge: row.badge,
+            timestamp: formatDate(row.created_at),
+          };
+          // Avoid double-adding if this client already has it (e.g. from its own insert)
+          setEntries((prev) =>
+            prev.some((e) => e.id === newEntry.id) ? prev : [newEntry, ...prev],
+          );
+        },
+      )
+      .subscribe();
+
+    return () => {
+      isMounted = false;
+      supabase.removeChannel(channel);
+    };
   }, []);
 
-  const handleSign = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSign = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!name.trim()) {
       setErrorMsg("Please state your name or alias.");
@@ -222,45 +272,44 @@ export default function Guestbook() {
       setErrorMsg("Write a short note or sign-off message.");
       return;
     }
+    if (name.trim().length > 60) {
+      setErrorMsg("Name is too long (60 characters max).");
+      return;
+    }
+    if (message.trim().length > 500) {
+      setErrorMsg("Message is too long (500 characters max).");
+      return;
+    }
 
     setIsSubmitting(true);
     setErrorMsg("");
 
-    // Simulate database network lag for cinematic accuracy
+    const { error } = await supabase.from("guestbook_entries").insert({
+      name: name.trim(),
+      role: role.trim() || "Visitor / Guest",
+      message: message.trim(),
+      badge: selectedBadge,
+    });
+
+    setIsSubmitting(false);
+
+    if (error) {
+      console.error(error);
+      setErrorMsg("Something went wrong — please try again.");
+      return;
+    }
+
+    // Reset form
+    setName("");
+    setRole("");
+    setMessage("");
+    setSelectedBadge("sparkle");
+    setFormSuccess(true);
+
     setTimeout(() => {
-      const today = new Date();
-      const formattedDate = today.toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      });
-
-      const newEntry: GuestbookEntry = {
-        id: "user-" + Date.now(),
-        name: name.trim(),
-        role: role.trim() || "Visitor / Guest",
-        message: message.trim(),
-        timestamp: formattedDate,
-        badge: selectedBadge,
-      };
-
-      const updated = [newEntry, ...entries];
-      setEntries(updated);
-      localStorage.setItem("euger_guestbook_entries", JSON.stringify(updated));
-
-      // Reset form
-      setName("");
-      setRole("");
-      setMessage("");
-      setSelectedBadge("sparkle");
-      setIsSubmitting(false);
-      setFormSuccess(true);
-
-      setTimeout(() => {
-        setFormSuccess(false);
-        setIsDialogOpen(false);
-      }, 1800);
-    }, 1000);
+      setFormSuccess(false);
+      setIsDialogOpen(false);
+    }, 1800);
   };
 
   return (
@@ -313,37 +362,42 @@ export default function Guestbook() {
       </div>
 
       {/* Full-bleed marquee — same pattern as Footer's crowd canvas */}
-      {/* Sits as a direct sibling to the padded header, not inside it */}
-      <div
-        className="flex flex-col gap-0 w-full overflow-hidden select-none pb-8"
-        onMouseEnter={(e) => e.currentTarget.classList.add("marquee-paused")}
-        onMouseLeave={(e) => e.currentTarget.classList.remove("marquee-paused")}
-        onTouchStart={(e) => e.currentTarget.classList.add("marquee-paused")}
-        onTouchEnd={(e) => e.currentTarget.classList.remove("marquee-paused")}
-      >
-        <div className="relative overflow-hidden">
-          <div className="absolute left-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-r from-zinc-100 to-transparent" />
-          <div className="marquee-inner flex transform-gpu min-w-[200%] py-3">
-            {[...entries, ...entries, ...entries, ...entries].map(
-              (entry, i) => (
-                <MarqueeCard key={`r1-${i}`} entry={entry} />
-              ),
-            )}
+      {!isLoading && (
+        <div
+          className="flex flex-col gap-0 w-full overflow-hidden select-none pb-8"
+          onMouseEnter={(e) => e.currentTarget.classList.add("marquee-paused")}
+          onMouseLeave={(e) =>
+            e.currentTarget.classList.remove("marquee-paused")
+          }
+          onTouchStart={(e) => e.currentTarget.classList.add("marquee-paused")}
+          onTouchEnd={(e) =>
+            e.currentTarget.classList.remove("marquee-paused")
+          }
+        >
+          <div className="relative overflow-hidden">
+            <div className="absolute left-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-r from-zinc-100 to-transparent" />
+            <div className="marquee-inner flex transform-gpu min-w-[200%] py-3">
+              {[...entries, ...entries, ...entries, ...entries].map(
+                (entry, i) => (
+                  <MarqueeCard key={`r1-${i}`} entry={entry} />
+                ),
+              )}
+            </div>
+            <div className="absolute right-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-l from-zinc-100 to-transparent" />
           </div>
-          <div className="absolute right-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-l from-zinc-100 to-transparent" />
-        </div>
-        <div className="hidden sm:block relative overflow-hidden">
-          <div className="absolute left-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-r from-zinc-100 to-transparent" />
-          <div className="marquee-inner marquee-reverse flex transform-gpu min-w-[200%] py-3">
-            {[...entries, ...entries, ...entries, ...entries].map(
-              (entry, i) => (
-                <MarqueeCard key={`r2-${i}`} entry={entry} />
-              ),
-            )}
+          <div className="hidden sm:block relative overflow-hidden">
+            <div className="absolute left-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-r from-zinc-100 to-transparent" />
+            <div className="marquee-inner marquee-reverse flex transform-gpu min-w-[200%] py-3">
+              {[...entries, ...entries, ...entries, ...entries].map(
+                (entry, i) => (
+                  <MarqueeCard key={`r2-${i}`} entry={entry} />
+                ),
+              )}
+            </div>
+            <div className="absolute right-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-l from-zinc-100 to-transparent" />
           </div>
-          <div className="absolute right-0 top-0 h-full w-16 md:w-20 z-10 pointer-events-none bg-linear-to-l from-zinc-100 to-transparent" />
         </div>
-      </div>
+      )}
 
       {/* Dialog */}
       <AnimatePresence>
@@ -387,7 +441,7 @@ export default function Guestbook() {
                         Sign Euger&apos;s Registry
                       </h3>
                       <span className="text-[10px] font-mono text-zinc-400">
-                        YOUR VISITOR BADGE SECURED LOCAL
+                        YOUR ENTRY WILL BE PUBLIC
                       </span>
                     </div>
                   </div>
@@ -439,6 +493,7 @@ export default function Guestbook() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         disabled={isSubmitting}
+                        maxLength={60}
                         className="w-full bg-white border border-zinc-200 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 transition-all"
                       />
                     </div>
@@ -453,6 +508,7 @@ export default function Guestbook() {
                         value={role}
                         onChange={(e) => setRole(e.target.value)}
                         disabled={isSubmitting}
+                        maxLength={60}
                         className="w-full bg-white border border-zinc-200 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 transition-all"
                       />
                     </div>
@@ -498,6 +554,7 @@ export default function Guestbook() {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       disabled={isSubmitting}
+                      maxLength={500}
                       className="w-full bg-white border border-zinc-200 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 transition-all resize-none leading-relaxed"
                     />
                   </div>

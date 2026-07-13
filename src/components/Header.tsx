@@ -133,16 +133,7 @@ export default function Header({ activeSection, onNavigate }: HeaderProps) {
 
           {/* Contact / Action CTA Button */}
           <div className="hidden lg:flex items-center gap-3">
-            <a
-              id="header-resume"
-              href="/resume/euger_bonete_resume.pdf"
-              download
-              className="flex items-center gap-1.5 text-zinc-500 hover:text-zinc-950 text-xs font-medium px-3 py-2 rounded-full border border-zinc-200 hover:border-zinc-300 bg-white hover:bg-zinc-50 transition-all duration-200 shadow-sm"
-              title="Download Resume"
-            >
-              <FileDown className="w-3.5 h-3.5" />
-              Resume
-            </a>
+       
             <button
               id="header-cta"
               onClick={() => handleNavClick('contact')}

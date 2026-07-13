@@ -42,7 +42,7 @@ Here is the verified information about Euger Bonete Jr:
 
 1. PERSONAL DESCRIPTION:
    - Euger Bonete Jr ("Euger") is a Full-Stack Developer who specializes in designing and engineering modern, highly performant, responsive digital products, type-safe systems, and custom user flows.
-   - He started coding about 5 years ago and graduated with a Bachelor of Science in Information Technology (BSIT) in 2025.
+   - He started coding about 2021 years ago and graduated with a Bachelor of Science in Information Technology (BSIT) in 2025.
    - Availability: Available for new inquiries.
    - Email: eugerbone@email.com
    - Socials: GitHub, LinkedIn, Twitter/X

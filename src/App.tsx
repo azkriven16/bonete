@@ -12,6 +12,7 @@ import Notification from "./components/Notification";
 import PortfolioChat from "./components/PortfolioChat";
 import ZigzagScrollProgress from "./components/ZigzagScrollProgress";
 import { ArrowUp } from "lucide-react";
+import AdminContacts from "./components/AdminContacts";
 
 const SECTION_IDS = [
   "hero",
@@ -22,6 +23,14 @@ const SECTION_IDS = [
 ] as const;
 
 export default function App() {
+  // No hooks in this component — safe to branch before anything runs.
+  if (window.location.pathname === "/admin") {
+    return <AdminContacts />;
+  }
+  return <PortfolioSite />;
+}
+
+function PortfolioSite() {
   const [activeSection, setActiveSection] = useState("hero");
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState<"success" | "error">("success");
@@ -75,7 +84,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-zinc-850 font-sans selection:bg-zinc-950 selection:text-white flex flex-col antialiased relative">
+    <div className="py-20 md:py-0 min-h-screen bg-white text-zinc-850 font-sans selection:bg-zinc-950 selection:text-white flex flex-col antialiased relative">
       {/* Animated Film Grain Overlay */}
       <Noise patternAlpha={4} patternRefreshInterval={3} />
 

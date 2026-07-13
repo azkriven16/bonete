@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Send, CheckCircle2, Clock, MapPin, Mail, Calendar, ArrowRight, RefreshCw } from 'lucide-react';
 import { HERO_DATA } from '../data';
 import { SplitText } from './ScrollAnimations';
+import { supabase } from '../utils/supabase';
 
 interface ContactProps {
   onSuccessNotification: (msg: string) => void;
@@ -51,13 +52,25 @@ export default function Contact({ onSuccessNotification }: ContactProps) {
     }
 
     setIsSubmitting(true);
-    // Simulate high-performance API routing delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
+    const { error } = await supabase.from('contact_messages').insert({
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      company: formData.company.trim() || null,
+      message: formData.message.trim(),
+    });
+
     setIsSubmitting(false);
+
+    if (error) {
+      console.error(error);
+      alert("Something went wrong sending your message — please try again or email me directly.");
+      return;
+    }
+
     setSubmitSuccess(true);
     onSuccessNotification(`Thank you ${formData.name}! Your request has been dispatched to Euger Bonete Jr.`);
-    
+
     // Clear state
     setFormData({
       name: '',
@@ -173,6 +186,7 @@ export default function Contact({ onSuccessNotification }: ContactProps) {
                         value={formData.name}
                         onChange={handleInputChange}
                         placeholder="Enter name"
+                        maxLength={100}
                         className="bg-white border border-zinc-200 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 px-4 py-3 rounded-xl text-sm transition-all focus:outline-none placeholder-zinc-400 font-light text-zinc-900"
                       />
                     </div>
@@ -190,6 +204,7 @@ export default function Contact({ onSuccessNotification }: ContactProps) {
                         value={formData.email}
                         onChange={handleInputChange}
                         placeholder="name@company.com"
+                        maxLength={254}
                         className="bg-white border border-zinc-200 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 px-4 py-3 rounded-xl text-sm transition-all focus:outline-none placeholder-zinc-400 font-light text-zinc-900"
                       />
                     </div>
@@ -207,6 +222,7 @@ export default function Contact({ onSuccessNotification }: ContactProps) {
                       value={formData.company}
                       onChange={handleInputChange}
                       placeholder="e.g. Frontend build, design system, quick question..."
+                      maxLength={150}
                       className="bg-white border border-zinc-200 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 px-4 py-3 rounded-xl text-sm transition-all focus:outline-none placeholder-zinc-400 font-light text-zinc-900"
                     />
                   </div>
@@ -224,6 +240,7 @@ export default function Contact({ onSuccessNotification }: ContactProps) {
                       value={formData.message}
                       onChange={handleInputChange}
                       placeholder="Briefly describe the vision or specs..."
+                      maxLength={2000}
                       className="bg-white border border-zinc-200 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 px-4 py-3 rounded-xl text-sm transition-all focus:outline-none placeholder-zinc-400 resize-none font-light leading-relaxed text-zinc-900"
                     />
                   </div>

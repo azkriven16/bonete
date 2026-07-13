@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import { motion, Variant, Variants } from "motion/react";
 import {
   ArrowDown,
   Github,
@@ -121,7 +121,7 @@ export default function Hero({
           {/* Status availability capsule */}
           <motion.div
             id="hero-status"
-            variants={itemVariants}
+            variants={itemVariants as Variants}
             className="inline-flex items-center gap-2 bg-white border border-zinc-200 shadow-sm px-3.5 py-1.5 rounded-full"
           >
             <span className="relative flex h-2 w-2">
@@ -136,7 +136,7 @@ export default function Hero({
           {/* Main Title Heading */}
           <motion.h1
             id="hero-headline"
-            variants={itemVariants}
+            variants={itemVariants as Variants}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-[5.5rem] leading-[1.05] font-sans font-bold text-zinc-950 tracking-tight"
           >
             Building{" "}
@@ -163,7 +163,7 @@ export default function Hero({
           {/* Subtitle / Narrative */}
           <motion.p
             id="hero-description"
-            variants={itemVariants}
+            variants={itemVariants as Variants}
             className="text-base sm:text-lg md:text-xl text-zinc-600 max-w-2xl font-light leading-relaxed tracking-tight"
           >
             I am{" "}
@@ -176,7 +176,7 @@ export default function Hero({
           {/* Hero CTAs */}
           <motion.div
             id="hero-actions"
-            variants={itemVariants}
+            variants={itemVariants as Variants}
             className="flex flex-wrap items-center gap-4 mt-2"
           >
             <button

@@ -5,7 +5,7 @@ export const HERO_DATA = {
   title: "Full-Stack Developer",
   subtitle: "Designing & engineering modern digital products.",
   description:
-    "Full-stack developer specializing in turning Figma into production — type-safe interfaces built with React, TypeScript, and Next.js. Three years shipping for real clients across hiring, fintech, and SaaS.",
+    "Full-stack developer specializing in turning Figma into production — type-safe interfaces built with React, TypeScript, and Next.js.",
   availability: "Available for new inquiries",
   socials: {
     github: "https://github.com/azkriven16/",
