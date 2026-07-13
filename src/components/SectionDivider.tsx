@@ -83,7 +83,7 @@ export default function SectionDivider({
 
   return (
     <div
-     className="block md:block"
+     className="hidden md:block"
       style={{
         marginTop: `calc(-${((h / 1440) * 100).toFixed(4)}vw + 1px)`,
         lineHeight: 0,
