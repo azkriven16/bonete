@@ -84,7 +84,7 @@ function PortfolioSite() {
   };
 
   return (
-    <div className="py-20 md:py-0 min-h-screen bg-white text-zinc-850 font-sans selection:bg-zinc-950 selection:text-white flex flex-col antialiased relative">
+    <div className="my-20 md:my-0 min-h-screen bg-white text-zinc-850 font-sans selection:bg-zinc-950 selection:text-white flex flex-col antialiased relative">
       {/* Animated Film Grain Overlay */}
       <Noise patternAlpha={4} patternRefreshInterval={3} />
 
